@@ -103,7 +103,9 @@ if __name__ == "__main__":
             optimizer.step()
             running_loss += loss.item()
             if i % LOG_INTERVAL == LOG_INTERVAL - 1:
-                print(f"[{epoch + 1}, {i + 1}/{len(trainloader)}] loss: {running_loss / LOG_INTERVAL:.5f}")
+                print(
+                    f"[{epoch + 1}, {i + 1}/{len(trainloader)}] loss: {running_loss / LOG_INTERVAL:.5f}"
+                )
                 running_loss = 0.0
 
         if ((epoch + 1) % VALIDATION_INTERVAL) == 0:

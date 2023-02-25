@@ -3,6 +3,7 @@ import torch
 import torchvision
 import torchvision.transforms as transforms
 from config import *
+
 # Custom Transformation Function to Normalize the data this process is done in the Dataloading Stage
 transform = transforms.Compose(
     [transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))]
