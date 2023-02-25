@@ -1,10 +1,19 @@
+import os
+
+import torch
+import torch.nn as nn
+import torch.optim as optim
+from torch.optim.lr_scheduler import ReduceLROnPlateau
+
 from config import *
+from model import *
 from data import testloader, trainloader
 
-model = Net()
+# model = Net()
+model = TransferInceptionNetV3(num_clases=10, freeze_layers=True)
 model.to(device)  # Sending the Model to device for training
 
-optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
+optimizer = optim.Adam(model.parameters(), lr=1e-3)
 loss_fn = nn.CrossEntropyLoss()
 
 # Define a learning rate scheduler

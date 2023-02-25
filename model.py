@@ -1,10 +1,7 @@
-import os
-
-import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import torch.optim as optim
-from torch.optim.lr_scheduler import ReduceLROnPlateau
+from torchvision import transforms
+from torchvision.models import inception_v3
 
 
 class Net(nn.Module):
@@ -71,4 +68,28 @@ class Net(nn.Module):
 
 
 class TransferInceptionNetV3(nn.Module):
-    pass
+    def __init__(self, num_clases: int = 10, freeze_layers: bool = True) -> None:
+        super().__init__()
+        self.num_classes = num_clases
+        self.base_model = inception_v3(pretrained=True, aux_logits=False)
+        self.base_model.fc = nn.Linear(2048, 1024)
+        self.fc = nn.Sequential(
+            [nn.Linear(1024, 256), nn.SELU(), nn.Linear(256, self.num_classes)]
+        )
+
+        if freeze_layers:
+            for param in self.base_model.parameters():
+                param.requires_grad = False
+        self.resize = transforms.Compose(
+            [
+                transforms.Resize(299, 299),
+                transforms.ToTensor(),
+                transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+            ]
+        )
+
+    def forward(self, x):
+        x = self.resize(x)
+        x = self.base_model(x)
+        x = self.fc(x)
+        return x

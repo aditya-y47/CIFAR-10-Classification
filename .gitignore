@@ -163,3 +163,5 @@ cython_debug/
 Assignment_2_Notebook_20BM6JP47.ipynb
 data
 data/
+
+models/CIFAR_NET.pt
