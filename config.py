@@ -1,0 +1,7 @@
+NUM_EPOCHS = 10
+BATCH_SIZE = 2**10
+LOG_INTERVAL = 7
+VALIDATION_INTERVAL = 2
+EXPORT_PATH = "./models/CIFAR_NET.pt"
+
+device = "mps"
