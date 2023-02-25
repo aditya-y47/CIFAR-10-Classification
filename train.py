@@ -10,7 +10,7 @@ from model import *
 from data import testloader, trainloader
 
 # model = Net()
-model = TransferInceptionNetV3(num_clases=10, freeze_layers=True)
+model = Transfer_Resnet(num_clases=10, freeze_layers=True)
 model.to(device)  # Sending the Model to device for training
 
 optimizer = optim.Adam(model.parameters(), lr=1e-3)

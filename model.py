@@ -1,7 +1,7 @@
 import torch.nn as nn
 import torch.nn.functional as F
 from torchvision import transforms
-from torchvision.models import inception_v3
+from torchvision.models import resnet152
 
 
 class Net(nn.Module):
@@ -67,14 +67,17 @@ class Net(nn.Module):
             return self.pool(self.conv6(x))
 
 
-class TransferInceptionNetV3(nn.Module):
+class Transfer_Resnet(nn.Module):
     def __init__(self, num_clases: int = 10, freeze_layers: bool = True) -> None:
         super().__init__()
         self.num_classes = num_clases
-        self.base_model = inception_v3(weights="IMAGENET1K_V1", progress=True)
-        self.base_model.fc = nn.Linear(2048, 1024)
+        self.base_model = resnet152(weights="DEFAULT", progress=True)
+        self.base_model.fc = nn.Linear(2048, 512)
         self.fc = nn.Sequential(
-            nn.Linear(1024, 256), nn.SELU(), nn.Linear(256, self.num_classes)
+            nn.Linear(512, 256),
+            nn.SELU(),
+            nn.Dropout(),
+            nn.Linear(256, self.num_classes),
         )
 
         if freeze_layers:
@@ -83,7 +86,7 @@ class TransferInceptionNetV3(nn.Module):
         self.resize = transforms.Compose(
             [
                 transforms.Resize((299, 299)),
-                transforms.ToTensor(),
+                # transforms.ToTensor(),
                 transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
             ]
         )
