@@ -160,8 +160,11 @@ cython_debug/
 #.idea/
 
 
+# ADDITIONAL MISC STUFF
+.vscode
+.ruff_cache
+
 Assignment_2_Notebook_20BM6JP47.ipynb
 data
 data/
-
-models/CIFAR_NET.pt
+*.pt
